@@ -25,6 +25,7 @@ namespace Hahn.ApplicationProcess.Application.Hahn.ApplicatonProcess.December202
             RuleFor(x => x.EmailAddress).EmailAddress();
             RuleFor(x => x.Age).InclusiveBetween(20,60);
             RuleFor(x => x.Hired).NotNull();
+            //RuleFor(x => x.CountryOfOrigin)
 
 
 
