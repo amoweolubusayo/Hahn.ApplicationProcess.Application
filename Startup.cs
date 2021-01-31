@@ -15,32 +15,43 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System.Reflection;
+using Hahn.ApplicationProcess.Application.Interfaces;
+using Hahn.ApplicationProcess.Application.InterfacesImpl;
+using Hahn.ApplicationProcess.Application.Utility;
 
-namespace Hahn.ApplicationProcess.Application {
-    public class Startup {
-        public Startup (IConfiguration configuration) {
+namespace Hahn.ApplicationProcess.Application
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices (IServiceCollection services) {
-            services.AddControllers ();
-            services.AddDbContext<ApplicationDbContext> (option => {
-                option.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection"));
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddScoped<ICountryLogic, CountryLogic>();
+            services.AddDbContext<ApplicationDbContext>(option =>
+            {
+                option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddSwaggerGen (c => {
-                c.CustomSchemaIds (x => x.FullName);
-                c.SwaggerDoc ("v1", new OpenApiInfo { Title = $"Applicant API", Version = "v1" });
-                c.IncludeXmlComments (Path.ChangeExtension (Assembly.GetEntryAssembly ().Location, "xml"));
-                c.AddSecurityDefinition ("Bearer", new OpenApiSecurityScheme {
+            services.AddSwaggerGen(c =>
+            {
+                c.CustomSchemaIds(x => x.FullName);
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = $"Applicant API", Version = "v1" });
+                //c.IncludeXmlComments (Path.ChangeExtension (Assembly.GetEntryAssembly ().Location, "xml"));
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
                     Description = "",
-                        Name = "Authorization",
-                        In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.ApiKey
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
                 });
-                c.AddSecurityRequirement (new OpenApiSecurityRequirement {
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                     {
                         new OpenApiSecurityScheme {
                             Reference = new OpenApiReference {
@@ -53,30 +64,36 @@ namespace Hahn.ApplicationProcess.Application {
                 });
 
             });
+           
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IWebHostEnvironment env,IConfiguration configuration) {
-            if (env.IsDevelopment ()) {
-                app.UseDeveloperExceptionPage ();
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
             }
-            app. UseSwagger();
-            app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint ("v1/swagger.json", $"{configuration["Swagger:Title"]} API V1");
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", $"{configuration["Swagger:Title"]} API V1");
             });
-            app.UseHttpsRedirection ();
+            app.UseHttpsRedirection();
 
-            app.UseRouting ();
+            app.UseRouting();
 
-            app.UseAuthorization ();
+            app.UseAuthorization();
 
-            app.UseEndpoints (endpoints => {
-                endpoints.MapControllers ();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
             });
         }
 
     }
 
-    
+
 }

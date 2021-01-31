@@ -4,10 +4,12 @@ using Hahn.ApplicationProcess.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using FluentValidation;
+
 
 namespace Hahn.ApplicationProcess.Application.Controllers
 {
-    [Route("api/loan/mandate")]
+    [Route("api/country")]
     [ApiController]
     public class QueryCountryController : ControllerBase
     {
@@ -25,7 +27,7 @@ namespace Hahn.ApplicationProcess.Application.Controllers
         }
 
         [ProducesResponseType(400)]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         [Produces("application/json")]
         [HttpGet, Route("getcountry")]
         public IActionResult GetCountriesByName([FromBody] CountryModel model)
@@ -57,5 +59,6 @@ namespace Hahn.ApplicationProcess.Application.Controllers
             }
         }
 
+    
     }
 }

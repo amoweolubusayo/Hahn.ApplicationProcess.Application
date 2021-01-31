@@ -15,25 +15,23 @@ namespace Hahn.ApplicationProcess.Application.Hahn.ApplicatonProcess.December202
 
     }
 
+
     public class ApplicantValidator : AbstractValidator<Applicant>
     {
         public ApplicantValidator()
         {
+
+            
             RuleFor(x => x.Name).MinimumLength(5);
             RuleFor(x => x.FamilyName).MinimumLength(5);
             RuleFor(x => x.Address).MinimumLength(10);
             RuleFor(x => x.EmailAddress).EmailAddress();
             RuleFor(x => x.Age).InclusiveBetween(20,60);
             RuleFor(x => x.Hired).NotNull();
-            //RuleFor(x => x.CountryOfOrigin)
+           // RuleFor(x => x.CountryOfOrigin).Must()
 
-
-
-           
-
-
-
-
+            //GetDefaultMessageTemplate
+            //IsVali
         }
     }
 
